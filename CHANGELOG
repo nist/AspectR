@@ -1,0 +1,44 @@
+2002-01-29, RF
+	* Released version 0.3.5 with rbprof included.
+	* Fixed bug that caused infinite recursion when wrapping method with
+	  same name in both Super and Subclass.
+	* Fixed bug for methods with arity 0 that calls yield.
+
+2001-06-19, RF
+	* Released as version 0.3.4
+	* Moved tests from aspectr.rb to tests/atest_aspectr.rb.
+	* Added pack and install scripts.
+	* Added wrap_with_code method.
+	* Moved CVS to SourceForge.
+	* Fixed block-bug. Thanks to Michael Neumann for finding this and 
+	  sending diff!
+
+2001-01-29, version 0.3.3
+	* __aop_generate_args added => 
+	   arity no longer changes on wrapped methods => more transparent.
+	* __aop_generate_syntax cleaned up
+	* TODO and CHANGELOG added.
+	* Aspect.dispatch?, disable_advice_dispatching added
+
+2001-01-27 - 01-28, version 0.3, 0.3.1 and 0.3.2 (Not released)
+	* Avi refactors and cleans up. Aspects are now classes.
+	* Avi and Robert exchanges some development versions with minor tweaks.
+	* Better examples/tests added
+	* README file.
+	
+2001-01-26, version 0.2
+	* First official release of AspectR after Avi and Robert merged
+	  AOP hacks. Additions/changes:
+	  - advices can be unwrapped independently of each other
+	  - advices can be added to objects (and not only classes)
+	  - init functions can be wrapped to initialize
+	  - only one dispatch function regardless of the num of advices added
+	  - advice methods get the return value from the wrapped method
+	  - added AspectR.wrap_classes for wrapping several classes
+	  - mangled name use method id instead of method name => less problems
+	      with methods having special names ([]= et al...)
+	  - changed name from Advice to Aspect
+	  - home page
+	
+2001-01-25, version 0.1
+	* Avi's submits the 'hack' advice.rb to RAA.

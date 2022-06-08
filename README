@@ -1,0 +1,118 @@
+AspectR - Simple aspect-oriented programming in Ruby
+====================================================
+Version:          0.3.5
+Release date:     2002-01-29
+Home page:        http://aspectr.sf.net/
+Tarball:          http://prdownloads.sf.net/aspectr/aspectr-0-3-5.tar.gz
+Authors:          Avi Bryant and Robert Feldt
+Email:            avi@beta4.com, feldt@ce.chalmers.se
+
+What is it?
+-----------
+Aspect-oriented programming concepts to Ruby. Essentially 
+it allows you to wrap code around existing methods in your classes. 
+This can be a good thing (and even affect how you design your code) since 
+it separates different concerns into different parts of the code. 
+It is somewhat similar to AspectJ, www.aspectj.org.
+
+Main features of AspectR (in AspectJ lingo): 
+* Join points: 
+    - object receives method/constructor call, and 
+    - field accessed (if access is via getter/setter meth) 
+* Advices: before (pre), after returning and after throwing (post) 
+* Aspects: classes inheriting Aspect. 
+    - supports "abstract" Aspects and overriding between advices. 
+* Wildcards (really regexps) can be used in pointcut designators, ie. to 
+  specify classes and methods to wrap advice's to. 
+* Pointcut parameters. Advices can access: 
+    - object and method receiving call, 
+    - arguments to call, 
+    - return values, and 
+    - exceptions raised. 
+
+Installation?
+-------------
+1. unpack tarball (if you haven't already)
+2. install: ruby install.rb
+3. If you've got RubyUnit you can also run tests: ruby tests/runtests.rb
+
+Example of use?
+---------------
+See tests, try out examples/logger.rb or check out the aspects in the aspects
+subdir.
+
+Documentation?
+--------------
+AspectR lets a module wrap any number of methods in other classes 
+(or objects) with the "advice" methods (in the lingo of Aspect/J) 
+of the module.
+
+Usage:
+ require 'aspectr'
+ include AspectR
+ class MyAspect < Aspect
+	def someAdviceMethod(method, object, exitstatus, *args)
+	     ...
+      end
+	... some other advice methods ...
+ end
+ ma = MyAspect.new
+ ma.wrap(someClassorObject, :preAdvice, :postAdvice, ... methods to wrap...)
+ or
+ ma.wrap(someClassorObject, :preAdvice, :postAdvice, /patternToWrap/)
+ or
+ AspectR.wrap_classes(ma, :preAdvice, :postAdvice,
+                      [Class1, Class2], ...methods to wrap...)
+
+Advice methods are passed a variable number of parameters:
+the first is the name of the method currently being wrapped
+the second is the object receiving the method call
+the third is the exit/return status:
+	Array with return value(s) if the method exited normally
+	true if the method exited with an exception
+	nil if the method hasn't yet exited (for preAdvice)
+the rest are the arguments that were passed to the wrapped method.
+
+I'm confused by the different version of this? What is/was 'advice.rb'?
+-----------------------------------------------------------------------
+AspectR was originally called advice.rb and written by Avi Bryant.
+Later Robert Feldt changed/tweaked/extended it. Avi then refactored very
+nicely, Robert tweaked a bit more and on it goes... ;-) For details see 
+CHANGELOG.
+
+License and legal issues?
+-------------------------
+All files in this package are 
+Copyright (c) 2001 Avi Bryant (avi@beta4.com) and Robert Feldt (feldt@ce.chalmers.se) 
+
+and they are distributed under GPL. See COPYING.TXT.
+
+Plans for the future?
+---------------------
+See TODO. This is an alpha release so there might be (some) changes 
+to the interface.
+
+How does AspectR differ from AspectJ?
+-------------------------------------
+AspectJ features that AspectR is missing:
+  * Join points: method/constructor called, method/constructor executes (?),
+      exception handler executes
+  * Most of the pointcut designator primitives
+  * Composition of pointcut designators (well you can of course specify 
+      several method calls in different classes and objects)
+  * 'around' advices (should be pretty easy to add if there's a benefit)
+  * precedence/specificity among advices/aspects
+  * reflection by sending joinpoint object to advices with context of join
+      point etc (easily added but why?)
+  * control-flow based crosscutting (might be possible if we locally attach
+      a trace func but are they needed?)
+
+Do you have comments or questions?
+----------------------------------
+We'd appreciate if you drop us a note if you're using 
+AspectR. If there are some known users we'll be more motivated to 
+pack up additions / new versions and post them to RAA.
+
+Happy coding!
+
+Avi and Robert

@@ -1,0 +1,123 @@
+RbProf - The AspectR profiler
+=============================
+Version:          0.2.1
+Release date:     2002-01-29
+Home page:        http://aspectr.sf.net/rbprof
+Tarball:          RbProf is included in the AspectR tarball below
+AspectR tarball:  http://prdownloads.sf.net/aspectr/aspectr-0-3-5.tar.gz
+Author:           Robert Feldt
+Email:            feldt@ce.chalmers.se
+
+What is it?
+-----------
+A profiler for Ruby programs. It's faster than the standard
+profiler and gives you information tailored to your needs.
+
+Main features:
+ * Fast (typically 5-10 times faster than Ruby's standard profiler)
+ * Focus on methods defined in program being profiled (ie. as a default does 
+     NOT profile Ruby's methods)
+ * Explicitly include Ruby's methods you want to be profiled 
+ * Reports from where a method was called, the call site.
+ * Summarizes difference to previous profiles; good when you iteratively
+   speed up your program.
+ * Can report on distribution of arguments in method calls (which indicates
+     whether you have something to gain by memoizing the method)
+
+Limitations:
+ * Does not measure time spent in class methods. Should not be more difficult
+     than instance methods but haven't been tested yet. Coming soon to a 
+     version near you (TM) :-)
+ * Cannot measure time spent in :id, :class, :type methods or in methods
+     with a leading underscore in their name.
+ * Alpha release so there are bugs and it will likely fail for some programs.
+     If so please report your problems.
+
+Installation?
+-------------
+1. Install aspectr (by following the instruction in the AspectR README)
+2. Go into the aspects/profiler directory (where this file resides)
+3. install RbProf: ruby ../../install.rb
+
+Why is it needed?
+-----------------
+* Standard profiler (profile.rb) is slow (typically slows down your program 
+    by a factor of 60-200).
+* Standard profiler gives you too much information.
+    * You frequently do not want to know the amount of time spent in Ruby's 
+        methods. RbProf lets you choose if you want to include them.
+* Standard profiler mixes results so you can't resolve their origin
+    * If a method is called from many places you don't know which invocation
+        of it is the problem. RbProf shows you the call sites to overcome this.
+
+Example of using RbProf on the command line?
+--------------------------------------------
+	$ ruby -r rbprof your_program.rb
+
+will print the profile to stderr (and as a binary to your_program.profile).
+
+Example of using RbProf from within a program?
+----------------------------------------------
+	require 'rbprof'
+ 	$profiler.profile_methods(:<<, Bignum)
+	#... rest of your program ...
+
+will profile the methods defined in your program and Bignum#<<. The profile
+will be printed to stderr (and as a binary to your_program.profile).
+Be sure to require rbprof in the first file in your program since it will
+only profile methods defined after the require.
+
+Requirements?
+-------------
+AspectR (but you probably already have it since RbProf is part of AspectR).
+
+Otherwise it should work with any Ruby >= 1.6.
+
+I've successfully used RbProf with Ruby 1.7.2 (2002-01-08) and 
+cygwin 1.1.8 (gcc version 2.95.2-6) on Windows 2000 Professional.
+
+NOTE THAT THIS IS AN ALPHA RELEASE SO THERE WILL LIKELY BE BUGS AND
+THE API MIGHT CHANGE.
+
+Documentation?
+--------------
+None yet. Examples of how to use RbProf is part of chapter 8 in the book
+"Ruby Developer's Guide", ISBN 1-928994-64-4.
+
+License and legal issues?
+-------------------------
+RbProf is Copyright (c) 2001, 2002 Robert Feldt, feldt@ce.chalmers.se.
+All rights reserved.
+
+RbProf is distributed under GPL. See LICENSE.
+
+Special things to note?
+-----------------------
+* RbProf has troubles profiling methods named:
+	id, type, class and methods with names starting with underscore...
+
+* RbProf will not be accurate when methods are very small. Ruby's timing
+  facilities are limited.
+
+* There is no rock solid way to know in Ruby when methods are defined. 
+  RbProf uses a trick that relies on Object.method_added and 
+  Object.singleton_method_added. If you redefine the former it should still
+  work but if you first override the latter and then the former it will
+  not be notified when you define new methods => 
+  will not profile those methods.
+
+* When you alias a method it is considered being defined so will be profiled.
+
+Plans for the future?
+---------------------
+See TODO.
+
+Do you have comments or questions?
+----------------------------------
+I'd appreciate if you drop me a note if you're using RbProf. If there are some known users I'll be more motivated to packing up additions / new versions and post them to RAA.
+
+Please give feedback!
+
+Happy coding!
+
+Robert Feldt, feldt@ce.chalmers.se

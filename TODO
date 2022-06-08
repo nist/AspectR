@@ -1,0 +1,37 @@
+TODO/WishList for AspectR:
+* Wrapping of class methods.
+* Tests for advice dispatch disabling.
+* FIX: Deinstall dispatcher and reinstall original method when all
+       advices have been unwrapped. 
+       Unclear how this should work with singletons!?
+* Check: generate_syntax must handle all special method names. Apply to
+       Ruby std classes to find the problematic ones.
+* Decide on how to handle 'inheritance anomalies'. For example
+  should you be able to unwrap on singleton what has been wrapped on
+  class? Also if aspect A is wrapped to Sup and Sub inherits Sup the 
+  Aspect A should not be wrapped to Sub? Or?
+* Move examples into test file and extend the tests.
+* Adding method call join points by setting a trace_function in the
+  dispatch code?! But the perfomrance penalty with trace funcs is
+  severe...
+* Some way to match regexp to methods when wrapping object? Should we
+  simply match to methods in objects class and then make them singletons?
+  (Done...)
+* Find out if it is possible to dynamically control if the aspect will be
+  called. Would it be a good thing to be able to turn advice dispatch off
+  when in an advice method?
+  return #{call} if @@__aop_disabled at the first row of the dispatcher?
+  Or more complex expressions? Control for each aspect? (Possible
+  implementation is to have flags in a hash in Advice)
+* Encapsulate all join point information (method name, args, return val,
+  context, exception etc) into one object (JoinPoint??) that is sent to 
+  advice's? Performance penalty? Maybe you should be able to choose
+  the kind of data returned? But there will be a lot of params so we'd
+  really need some keyword args. Matz, are you listening? ;-)
+* Add examples: type/error checking, synch, fault tolerance, profiling
+  * Thread safety?!
+* Check what is in AspectJ or other AOP-project/papers and see what we
+  could/should add:
+  * Check out the paper Aspect Oriented Programming: A Critical Analysis 
+    of a New Programming Paradigm (1999) Timothy Highley, Michael Lack, 
+    Perry Myers

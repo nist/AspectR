@@ -1,0 +1,46 @@
+* Find a way to name profiles written to disc and to choose which one
+    to compare to. Now its only based on the file name which must be the 
+    same. Ideas anyone?
+
+* Ensure timings and percentages can't be negative.
+
+* Disable profiling when we are in a profiling method (enter and leave et al)
+  or when we are attaching profiling to methods.
+
+* Find a way to supply arguments to RbProf so that the user can choose
+    the type of profile from the command line. If there is no nice way
+    to do it with the "-r" construct we need to create a script to run
+    a profile.
+
+* Clean up and refactor RbProf. It is currently a "hack" that has grown
+  too large.
+
+* We need to trap singleton methods added to catch class method defs.
+
+* Make installed code conditional on @profiler and unset $profiler while
+  in enter and leave => wont count method calls from within the
+  profiler.
+
+* Take away the post-run processing of arguments to arg.inspect. It may
+  not work since the arguments might change between successive calls to
+  a method. When we apply the inspect afterwards it might not represent
+  the state of the object at the time of the call => erroneous info.
+  And the inspects might take a long time to calc and thus adds too much
+  overhead. Maybe its ok if the user can choose and I note the problems that
+  exists?
+
+* Accuracy:
+	* Compensate for overhead it introduces. Time enter and leave methods
+	  and subtract from times.
+	* Use high-resolution timer? But are they available for process
+          timing? Maybe its better as is. Combine them?
+
+* Print profiles as decorated call graphs to postscript (if you have 
+     graphviz/dot). Or maybe we should do this in related aspect called
+     tracer?
+
+* Add line profiling.
+* Install script that installs rbprof command line program.
+* rbprof command line program can be used to focus the profiling by specifying the classes and/or methods (can use regexps on the names) that are to be profiled.
+* rbprof has flag "--profile-callees" so that the chosen methods and the methods they can call are all profiled. How to know which methods are called is difficult! Dynamically by installing line profiler? (Too costly) Statically by analysing source? (Not doable since we don't know the type of all objects). We'll have to wait...
+
